@@ -2,11 +2,9 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: qq_test
-          uri: https://www.qq.com
+        - id: admin_route
+          uri: lb://pssmall-admin
           predicates:
-            - Query=hello,qq
-        - id: baidu_test
-          uri: https://www.baidu.com
-          predicates:
-            - Query=hello,baidu
+            - Path=/api/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*), /renren-fast/$\{segment}

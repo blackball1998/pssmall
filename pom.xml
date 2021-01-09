@@ -17,7 +17,6 @@
         <module>pssmall-ware</module>
         <module>pssmall-common</module>
         <module>renren-fast</module>
-        <module>renren-generator</module>
     </modules>
 
 </project>
