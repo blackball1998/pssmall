@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        namespace: 7d449cd7-a9ec-4030-9277-da6f5a712ec5
+        file-extension: yml
+  application:
+    name: pssmall-gateway

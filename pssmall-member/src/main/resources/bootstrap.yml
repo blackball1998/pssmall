@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: pssmall-member
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yml
+        group: dev
+        namespace: d2d4673a-adbf-4bab-aad7-ebf3409573f0
+        refresh-enabled: true
+        extension-configs:
+          - data-id: database.yml
+            group: dev
+            refresh: true
+          - data-id: mybatis.yml
+            group: dev
+            refresh: true
