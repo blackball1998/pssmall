@@ -16,6 +16,9 @@ class PssmallProductApplicationTests {
     @Autowired
     BrandService brandService;
 
+//    @Autowired
+//    OSSClient ossClient;
+
     @Test
     void test1() {
         BrandEntity brand = new BrandEntity();
@@ -40,5 +43,13 @@ class PssmallProductApplicationTests {
         System.out.println(entity);
         list.forEach(System.out::println);
     }
+
+//    @Test
+//    void upLoad() throws FileNotFoundException {
+//        FileInputStream inputStream = new FileInputStream("D:\\Users\\Azure\\Desktop\\英文读物.png");
+//        ossClient.putObject("pssmall", "test.png", inputStream);
+//        ossClient.shutdown();
+//        System.out.println("success");
+//    }
 
 }

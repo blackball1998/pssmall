@@ -41,6 +41,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
                 .collect(Collectors.toList());
     }
 
+
     private List<CategoryEntity> getSubmenu(CategoryEntity root, List<CategoryEntity> categoryList) {
         return categoryList.stream()
                 .filter(menu -> menu.getParentCid().equals(root.getCatId()))
@@ -49,4 +50,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void deleteByIds(List<Long> ids) {
+        //TODO
+        baseMapper.deleteBatchIds(ids);
+    }
 }

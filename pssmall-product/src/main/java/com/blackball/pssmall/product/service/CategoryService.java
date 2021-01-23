@@ -20,5 +20,7 @@ public interface CategoryService extends IService<CategoryEntity> {
 
 
     List<CategoryEntity> listAsTree();
+
+    void deleteByIds(List<Long> ids);
 }
 
