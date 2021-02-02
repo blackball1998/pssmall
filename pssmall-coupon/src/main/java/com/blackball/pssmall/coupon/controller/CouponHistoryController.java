@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.blackball.pssmall.coupon.entity.CouponHistoryEntity;
 import com.blackball.pssmall.coupon.service.CouponHistoryService;
 import com.blackball.common.utils.PageUtils;
-import com.blackball.common.utils.R;
-
 
 
 /**

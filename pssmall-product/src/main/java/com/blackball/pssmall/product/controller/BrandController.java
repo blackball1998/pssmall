@@ -1,30 +1,26 @@
 package com.blackball.pssmall.product.controller;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.blackball.pssmall.product.entity.BrandEntity;
-import com.blackball.pssmall.product.service.BrandService;
 import com.blackball.common.utils.PageUtils;
 import com.blackball.common.utils.R;
+import com.blackball.common.valid.AddGroup;
+import com.blackball.common.valid.UpdateGroup;
+import com.blackball.common.valid.UpdateStatusGroup;
+import com.blackball.pssmall.product.entity.BrandEntity;
+import com.blackball.pssmall.product.service.BrandService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.Map;
 
 /**
  * 品牌
  *
- * @author blackball
- * @email blackball@outlook.com
- * @date 2020-12-30 22:25:15
+ * @author leifengyang
+ * @email leifengyang@gmail.com
+ * @date 2019-10-01 22:50:32
  */
 @RestController
 @RequestMapping("product/brand")
@@ -37,7 +33,7 @@ public class BrandController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("product:brand:list")
-    public R list(@RequestParam Map<String, Object> params) {
+    public R list(@RequestParam Map<String, Object> params){
         PageUtils page = brandService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -49,8 +45,8 @@ public class BrandController {
      */
     @RequestMapping("/info/{brandId}")
     //@RequiresPermissions("product:brand:info")
-    public R info(@PathVariable("brandId") Long brandId) {
-        BrandEntity brand = brandService.getById(brandId);
+    public R info(@PathVariable("brandId") Long brandId){
+		BrandEntity brand = brandService.getById(brandId);
 
         return R.ok().put("brand", brand);
     }
@@ -60,8 +56,25 @@ public class BrandController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:brand:save")
-    public R save(@Validated @RequestBody BrandEntity brand) {
+    public R save(@Validated({AddGroup.class}) @RequestBody BrandEntity brand/*,BindingResult result*/){
+//        if(result.hasErrors()){
+//            Map<String,String> map = new HashMap<>();
+//            //1、获取校验的错误结果
+//            result.getFieldErrors().forEach((item)->{
+//                //FieldError 获取到错误提示
+//                String message = item.getDefaultMessage();
+//                //获取错误的属性的名字
+//                String field = item.getField();
+//                map.put(field,message);
+//            });
+//
+//            return R.error(400,"提交的数据不合法").put("data",map);
+//        }else {
+//
+//        }
+
         brandService.save(brand);
+
 
         return R.ok();
     }
@@ -71,7 +84,17 @@ public class BrandController {
      */
     @RequestMapping("/update")
     //@RequiresPermissions("product:brand:update")
-    public R update(@RequestBody BrandEntity brand) {
+    public R update(@Validated(UpdateGroup.class) @RequestBody BrandEntity brand){
+		brandService.updateDetail(brand);
+
+        return R.ok();
+    }
+    /**
+     * 修改状态
+     */
+    @RequestMapping("/update/status")
+    //@RequiresPermissions("product:brand:update")
+    public R updateStatus(@Validated(UpdateStatusGroup.class) @RequestBody BrandEntity brand){
         brandService.updateById(brand);
 
         return R.ok();
@@ -82,8 +105,8 @@ public class BrandController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("product:brand:delete")
-    public R delete(@RequestBody Long[] brandIds) {
-        brandService.removeByIds(Arrays.asList(brandIds));
+    public R delete(@RequestBody Long[] brandIds){
+		brandService.removeByIds(Arrays.asList(brandIds));
 
         return R.ok();
     }

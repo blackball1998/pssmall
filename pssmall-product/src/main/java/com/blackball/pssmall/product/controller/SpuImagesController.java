@@ -1,28 +1,22 @@
 package com.blackball.pssmall.product.controller;
 
-import java.util.Arrays;
-import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.blackball.pssmall.product.entity.SpuImagesEntity;
-import com.blackball.pssmall.product.service.SpuImagesService;
 import com.blackball.common.utils.PageUtils;
 import com.blackball.common.utils.R;
+import com.blackball.pssmall.product.entity.SpuImagesEntity;
+import com.blackball.pssmall.product.service.SpuImagesService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-
+import java.util.Arrays;
+import java.util.Map;
 
 /**
  * spu图片
  *
- * @author blackball
- * @email blackball@outlook.com
- * @date 2020-12-30 22:25:14
+ * @author leifengyang
+ * @email leifengyang@gmail.com
+ * @date 2019-10-01 22:50:32
  */
 @RestController
 @RequestMapping("product/spuimages")

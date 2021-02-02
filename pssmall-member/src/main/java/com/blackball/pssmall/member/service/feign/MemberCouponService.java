@@ -1,6 +1,5 @@
 package com.blackball.pssmall.member.service.feign;
 
-import com.blackball.common.utils.R;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 

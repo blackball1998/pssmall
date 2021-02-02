@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.blackball.pssmall.coupon.entity.SeckillSkuNoticeEntity;
 import com.blackball.pssmall.coupon.service.SeckillSkuNoticeService;
 import com.blackball.common.utils.PageUtils;
-import com.blackball.common.utils.R;
-
 
 
 /**

@@ -1,6 +1,5 @@
 package com.blackball.pssmall.member;
 
-import com.blackball.common.utils.R;
 import com.blackball.pssmall.member.service.feign.MemberCouponService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

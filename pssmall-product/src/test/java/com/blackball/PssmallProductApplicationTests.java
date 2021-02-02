@@ -4,17 +4,28 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.blackball.pssmall.product.PssmallProductApplication;
 import com.blackball.pssmall.product.entity.BrandEntity;
 import com.blackball.pssmall.product.service.BrandService;
+import com.blackball.pssmall.product.service.CategoryService;
+import com.blackball.pssmall.product.service.impl.CategoryServiceImpl;
+import com.blackball.pssmall.product.vo.Catalog2Vo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.util.List;
+import java.util.Map;
 
 @SpringBootTest(classes = PssmallProductApplication.class)
 class PssmallProductApplicationTests {
 
     @Autowired
     BrandService brandService;
+
+    @Autowired
+    StringRedisTemplate template;
+
+    @Autowired
+    CategoryServiceImpl categoryService;
 
 //    @Autowired
 //    OSSClient ossClient;
@@ -43,6 +54,18 @@ class PssmallProductApplicationTests {
         System.out.println(entity);
         list.forEach(System.out::println);
     }
+
+    @Test
+    void redisTest() {
+        template.opsForValue().set("hello", "world");
+        System.out.println(template.opsForValue().get("hello"));
+    }
+
+//    @Test
+//    void categoryTest() {
+//        Map<String, List<Catalog2Vo>> map = categoryService.getCategoriesDb();
+//        System.out.println(map);
+//    }
 
 //    @Test
 //    void upLoad() throws FileNotFoundException {

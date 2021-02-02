@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.blackball.pssmall.ware.entity.PurchaseDetailEntity;
 import com.blackball.pssmall.ware.service.PurchaseDetailService;
 import com.blackball.common.utils.PageUtils;
-import com.blackball.common.utils.R;
-
 
 
 /**
