@@ -36,7 +36,7 @@ public interface CategoryService extends IService<CategoryEntity> {
 
     void updateCascade(CategoryEntity category);
 
-    List<CategoryEntity> getLevel1Catagories();
+    List<CategoryEntity> getLevel1Categories();
 
     Map<String, List<Catalog2Vo>> getCatalogJson() throws JsonProcessingException;
 }

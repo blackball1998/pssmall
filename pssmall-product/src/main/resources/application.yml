@@ -5,6 +5,13 @@ spring:
     url: jdbc:mysql://8.129.122.40:3306/pssmall_pms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  cache:
+    type: redis
+    redis:
+      time-to-live: 90000
+      key-prefix: CACHE_
+      cache-null-values: true
+
   cloud:
     nacos:
       discovery:

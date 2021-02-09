@@ -15,8 +15,11 @@ import com.blackball.pssmall.product.vo.Catalog2Vo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
@@ -34,6 +37,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 //    CategoryDao categoryDao;
     @Autowired
     StringRedisTemplate redisTemplate;
+
+    @Autowired
+    RedissonClient redissonClient;
 
     @Autowired
     CategoryBrandRelationService categoryBrandRelationService;
@@ -129,39 +135,52 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return children;
     }
 
+    @Cacheable(cacheNames = {"category"}, key = "#root.method.name")
     @Override
-    public List<CategoryEntity> getLevel1Catagories() {
+    public List<CategoryEntity> getLevel1Categories() {
+        System.out.println("查询数据库");
         return baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_cid", 0));
     }
 
     @Override
     public Map<String, List<Catalog2Vo>> getCatalogJson() throws JsonProcessingException {
-        String lockId = UUID.randomUUID().toString();
-        //抢占锁
-        Boolean absent = redisTemplate.opsForValue().setIfAbsent("lock", lockId, 10, TimeUnit.SECONDS);
-        if (absent) {
-            //抢到锁
-            Map<String, List<Catalog2Vo>> categories = getCategoriesDb();
-            //LUA脚本保证原子性（判断是否为自己的锁并删除）
-            String script = "if redis.call(\"get\",KEYS[1]) == ARGV[1] then\n" +
-                    "    return redis.call(\"del\",KEYS[1])\n" +
-                    "else\n" +
-                    "    return 0\n" +
-                    "end";
-            //释放锁
-            redisTemplate.execute(new DefaultRedisScript<Long>(script, Long.class), Collections.singletonList("lock"), lockId);
-            return categories;
-        } else {
-            //没抢到
-            try {
-                //防止栈溢出
-                Thread.sleep(300);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            //锁自旋
-            return getCatalogJson();
+//        String lockId = UUID.randomUUID().toString();
+//        //抢占锁
+//        Boolean absent = redisTemplate.opsForValue().setIfAbsent("lock", lockId, 10, TimeUnit.SECONDS);
+//        if (absent) {
+//            //抢到锁
+//            Map<String, List<Catalog2Vo>> categories = getCategoriesDb();
+//            //LUA脚本保证原子性（判断是否为自己的锁并删除）
+//            String script = "if redis.call(\"get\",KEYS[1]) == ARGV[1] then\n" +
+//                    "    return redis.call(\"del\",KEYS[1])\n" +
+//                    "else\n" +
+//                    "    return 0\n" +
+//                    "end";
+//            //释放锁
+//            redisTemplate.execute(new DefaultRedisScript<Long>(script, Long.class), Collections.singletonList("lock"), lockId);
+//            return categories;
+//        } else {
+//            //没抢到
+//            try {
+//                //防止栈溢出
+//                Thread.sleep(300);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            //锁自旋
+//            return getCatalogJson();
+//        }
+        RLock lock = redissonClient.getLock("categoryLock");
+        lock.lock();
+        Map<String, List<Catalog2Vo>> categories;
+        try {
+//            System.out.println("加锁，执行业务");
+            categories = getCategoriesDb();
+        } finally {
+//            System.out.println("解锁");
+            lock.unlock();
         }
+        return categories;
     }
 
     private Map<String, List<Catalog2Vo>> getCategoriesDb() throws JsonProcessingException {

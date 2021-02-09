@@ -22,7 +22,7 @@ public class IndexController {
     @GetMapping({"/", "index.html"})
     public String getIndex(Model model) {
         //获取所有的一级分类
-        List<CategoryEntity> catagories = categoryService.getLevel1Catagories();
+        List<CategoryEntity> catagories = categoryService.getLevel1Categories();
         model.addAttribute("catagories", catagories);
         return "index";
     }
