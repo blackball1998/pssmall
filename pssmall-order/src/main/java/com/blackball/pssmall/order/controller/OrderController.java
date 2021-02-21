@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.Map;
 
 import com.blackball.common.utils.R;
+import org.apache.commons.codec.digest.Md5Crypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.blackball.pssmall.order.entity.OrderEntity;
 import com.blackball.pssmall.order.service.OrderService;
 import com.blackball.common.utils.PageUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 
 /**
@@ -82,6 +88,12 @@ public class OrderController {
     public R delete(@RequestBody Long[] ids){
 		orderService.removeByIds(Arrays.asList(ids));
 
+        return R.ok();
+    }
+
+    @RequestMapping("/mqtest")
+    public R mqtest(){
+        orderService.sendMsg();
         return R.ok();
     }
 
